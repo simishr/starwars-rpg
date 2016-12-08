@@ -146,14 +146,14 @@ function startGame() {
 	yourCharacter["AP"] += yourCharacter["AP"];
 	console.log(yourCharacter["AP"]);
 
-	if( player1 <= 0){
-		document.querySelector("#message").innerHTML = "You have been defeated, play again?";
+	// if( player1 <= 0){
+	// 	document.querySelector("#message").innerHTML = "You have been defeated, play again?";
 
-	} else {
-		//defeatedDefender = true;
-		document.querySelector("#message").innerHTML = = "You have defeated" + yourDefender + ". Please select your next defender";
+	// } else {
+	// 	//defeatedDefender = true;
+	// 	document.querySelector("#message").innerHTML = = "You have defeated" + defender + ". Please select your next defender";
 
-	}
+	// }
 
 }
 
