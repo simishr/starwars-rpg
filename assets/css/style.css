@@ -1,0 +1,62 @@
+body {
+	 background: url("../images/background.jpg");
+	 width: 100%;
+	 min-height: 100%;
+	 background-repeat: no-repeat;
+	 background-size: cover;
+	 font-family: 'Quantico', sans-serif;
+}
+
+.characters {
+	color: white;
+	width: 150px;
+	height: 150px;
+	padding-top: 100px;
+	margin: 5px; 
+}
+
+.jumbotron {
+	padding-top: 1px;
+	padding-bottom: 1px;
+	background-color: black;
+	color: #42f4f4;
+	border-bottom: solid #42f4f4 1px;
+
+}
+
+.jumbotron h1 {
+	font-size: 42px;
+	padding-top: 0px;
+	font-family: 'Audiowide', cursive;
+}
+
+.message{
+	font-size: 15px;
+	padding-bottom: 0px;
+	color: red;
+	font-weight: bold;
+	font-family: 'Quantico', sans-serif;
+}
+
+.bottom-bar {
+	width: 100%;
+	border-top: solid #42f4f4 1px;
+	background-color: black;
+	color: #42f4f4;
+	height: 80px;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	margin-bottom: inherit;
+	padding-top: 25px;
+}
+
+/*.footerText{
+	padding-top: 30px;
+}*/
+/*.container {
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+*/
