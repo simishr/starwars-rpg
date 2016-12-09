@@ -1,4 +1,3 @@
-
 //DECLARING THE VARIABLES..
 	//THE ARRAY CONTAINING THE OBJECTS....
 var characters = [{
@@ -30,9 +29,7 @@ var characters = [{
 var yourCharacter;
 var enemiesAvailable = [];
 var defender;
-var chosenYourCharacter = false;
-var chosenYourDefender = false;
-var defeatedDefender= false;
+var defender1;
 
 function setFighterAttributes (fighter, index) {
 
@@ -82,7 +79,7 @@ $(document).ready(function() {
 				player1.css("background-image", "url(" + characters[i].image + ")");
 				var player1HP_p = $("<p>").addClass("yourPlayerHP").html(characters[i].HP);
 	       		player1.append(player1HP_p);
-	       		chosenYourCharacter = true;
+	       		//chosenYourCharacter = true;
 		}
 	}
 	//THIS WILL STOP THE ONCLICK EVENT...
@@ -92,13 +89,16 @@ $(document).ready(function() {
 	$(".message").text("Enemies Available. Pick your Defender!");
 	enemiesAvailable = characters.slice(characters[i]);
 //===================================================================================================
+
+function pickDefender(){
 	//ATTACHING ON-CLICK EVENTS TO "yourDefenderId" DIV....
 	$(".player").on("click", function(){
-		function pickDefender(){
+		
 		for(var i = 0; i < enemiesAvailable.length; i++) {
+
 			if($(this).data("charname") === characters[i].name){
   			//ASSINGING A NEW DIV FOR IT..
-			var defender1 = $("<div>").addClass("col-md-2 characters defender");
+			defender1 = $("<div>").addClass("col-md-2 characters defender");
 			defender = characters[i];
 			setFighterAttributes(defender1, i);
 
@@ -108,83 +108,75 @@ $(document).ready(function() {
 			defender1.css("background-image", "url(" + characters[i].image + ")");
 			var defender1HP_p = $("<p>").addClass("yourDefenderHP").html(characters[i].HP);
 	       	defender1.append(defender1HP_p);
-       		chosenYourDefender = true;
-
 		}
 	}
-}
+
 	//THIS WILL STOP THE ONCLICK EVENT
 	$(".player").off();
 	// HIDING THE CHOSEN CHARACTER FROM THE yourDefenderId....AND THEN GIVING A NEW MESSAGE..
 	$(this).hide();
 	$(".message").text("Start attacking by clicking the BUTTON");
 	enemiesAvailable = characters.slice(characters[i]);
+})
+}
+
+pickDefender();
 
 	//DYNAMICALLY CREATING THE ATTACK BUTTON......
 	var attack = $("<button>").addClass("btn-danger").html("Attack ").appendTo("#clickHere");
 
 //ATTCK BUTTON ONCLICK EVENT HANDLER..
 $("#clickHere").on("click", function() {
-	//if(yourCharacter["HP"] > 0 && defender["HP"] > 0){
-	// if((chosenYourCharacter) && (chosenYourDefender)){
+	
 	startAttack();
 
 	if (yourCharacter["HP"] <= 0){
+
 		$(".btn-danger").prop('disabled', true);
 		$(".message").text("You have been defeated, play again?");
-
+		return;
 
 	} else if(defender["HP"] <= 0){
-		//defeatedDefender = true;
+		
 		$(".btn-danger").prop('disabled', true);
 		$(".message").text("You won this round. Please select your next Defender");
-		$(defender1).hide();
-		chosenYourDefender = false;
+		defender1.hide();
+
 		pickDefender();
-		$(".player").on();
-	} else {
-			$(".message").text("Continue Attacking!!");
-		}
+		$(".btn-danger").prop('disabled', false);
+		startAttack();
+			if(enemiesAvailable.length === 0) {
+	 			$(".message").html("Congratulations!!! You WON the game!");
+	 			$(".btn-danger").prop('disabled', true);
+	 			return;
+		
+	} 
+	} 
 
-	// }
-
-	});
-
-
-})
-			
-	});
-});
-
-
-
-function startAttack() {
-
+	function startAttack() {
 	
 	yourCharacter["HP"] -= defender["AP"];
 	$(".yourPlayerHP").text(yourCharacter["HP"]);
 	
 
 	defender["HP"] -= yourCharacter["AP"];
-	$(".yourDefenderHP").text(defender["HP"]);
+		$(".yourDefenderHP").text(defender["HP"]);
+		yourCharacter["AP"] += yourCharacter["CAP"];
 
-	yourCharacter["AP"] += yourCharacter["CAP"];
-	
+	};
 
-
-
-
-
-	// //if(enemiesAvailable.length === 0) {
-	// 	$(".message").html("Congratulations!!! You WON the game!");
-	// }
-
-}
+	});
+});
 
 
-	//GAME DOESNT END EVEN WHEN THE HPs ARE LESSER THAN 0..
+})
+
+
+	//ISSUES WITH THE CODES SO FAR!!
+	//========================================================================
 	//ATTACK BUTTON APPEARS EVEN WHEN yourCharacter is clicked on twice..
-	//NEED TO MAKE THE RESTART BUTTON..
+	//NEED TO MAKE THE RESTART BUTTON..WHEN THE PLAYER LOOSES THAT RESTARTS THE GAME
+	//MESSAGE ON LINE 154 IS NOT SHOWN WHEN THE GAME IS WON!
 
 
 
