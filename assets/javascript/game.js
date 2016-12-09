@@ -30,30 +30,35 @@ var characters = [{
 var yourCharacter;
 var enemiesAvailable = [];
 var defender;
-//var chosenYourCharacter = false;
-//var chosenYourDefender = false;
-//var defeatedDefender= false;
+var chosenYourCharacter = false;
+var chosenYourDefender = false;
+var defeatedDefender= false;
 
+function setFighterAttributes (fighter, index) {
+
+	fighter.data("charname", characters[index].name);
+	fighter.data("charHP", characters[index].HP);
+	fighter.data("charAP", characters[index].AP);
+	fighter.data("charCAP", characters[index].CAP);
+	}
+
+//=================================================================================================================
 
 function loadCharacters(){
-		//DYNAMICALLY CREATING DIVS FOR ALL PLAYERS....
-		//A LOOP THAT ITERATES THROUGH THE CHARACTERS ARRAY...
+		
+		//A LOOP THAT ITERATES THROUGH THE CHARACTERS ARRAY...AND DYNAMICALLY CREATING DIVS FOR ALL PLAYERS..
 		for(var i = 0; i < characters.length; i++) {
-
 			var charactersDiv = $("<div>").addClass("col-md-2 characters player");
-			charactersDiv.data("charname", characters[i].name);
-			charactersDiv.data("charHP", characters[i].HP);
-			charactersDiv.data("charAP", characters[i].AP);
-			charactersDiv.data("charCAP", characters[i].CAP);
+			setFighterAttributes(charactersDiv, i);	
 
 		//APPENDING THE NEW DIV TO THE TOP ROW "yourCharactersList"....
 			$("#yourCharactersListId").append(charactersDiv);
 				charactersDiv.append("<p>" + characters[i].name + "</p>");
 	       		charactersDiv.css("background-image", "url(" + characters[i].image + ")");
 	       		charactersDiv.append("<p>" + characters[i].HP + "</p>");
+			}
 		}
-	}
-
+//==================================================================================================================
 
 $(document).ready(function() {
 
@@ -61,7 +66,7 @@ $(document).ready(function() {
 
 	//ATTACHING ON-CLICK EVENTS TO "yourCharacterList" DIVS...
 	$(".player").on("click", function() {
-		//var chosenYourCharacter = false;
+		
 		for(var i = 0; i < characters.length; i++) {
 
 		//IF THE CHOSEN PLAYERNAME MATCHES TO THAT OF THE "characters" List....
@@ -69,96 +74,118 @@ $(document).ready(function() {
   			//ASSINGING A NEW DIV FOR IT..
 				var player1 = $("<div>").addClass("col-md-2 characters player");
 				yourCharacter = characters[i];
-				player1.data("charname", characters[i].name);
-				player1.data("charHP", characters[i].HP);
-				player1.data("charAP", characters[i].AP);
-				player1.data("charCAP", characters[i].CAP);
+				setFighterAttributes(player1, i);
 
 			//APPENDING THE CHOSEN PLAYER TO THE "yourCharcterId" DIV....
 			$("#yourCharacterId").append(player1);
 				player1.append("<p>" + characters[i].name + "</p>");
 				player1.css("background-image", "url(" + characters[i].image + ")");
-	       		player1.append("<p>" + characters[i].HP + "</p>").addClass("yourPlayerHP");
+				var player1HP_p = $("<p>").addClass("yourPlayerHP").html(characters[i].HP);
+	       		player1.append(player1HP_p);
+	       		chosenYourCharacter = true;
 		}
 	}
 	//THIS WILL STOP THE ONCLICK EVENT...
 	$(".player").off();
 	// HIDING THE CHOSEN CHARACTER FROM THE yourCharacterListId....AND THEN GIVING A NEW MESSAGE..
-	$(this).addClass("hide");
-	$(".message").html("Enemies Available. Pick your Defender!");
+	$(this).hide();
+	$(".message").text("Enemies Available. Pick your Defender!");
 	enemiesAvailable = characters.slice(characters[i]);
-
-
-
-//function enemySelection(){}
+//===================================================================================================
 	//ATTACHING ON-CLICK EVENTS TO "yourDefenderId" DIV....
 	$(".player").on("click", function(){
+		function pickDefender(){
 		for(var i = 0; i < enemiesAvailable.length; i++) {
 			if($(this).data("charname") === characters[i].name){
   			//ASSINGING A NEW DIV FOR IT..
 			var defender1 = $("<div>").addClass("col-md-2 characters defender");
 			defender = characters[i];
-			defender1.data("charname", characters[i].name);
-			defender1.data("charHP", characters[i].HP);
-			defender1.data("charAP", characters[i].AP);
-			defender1.data("charCAP", characters[i].CAP);
+			setFighterAttributes(defender1, i);
 
 		//APPENDING THE CHOSEN PLAYER TO THE "yourCharcterId" DIV....
 		$("#yourDefenderId").append(defender1);
 			defender1.append("<p>" + characters[i].name + "</p>");
 			defender1.css("background-image", "url(" + characters[i].image + ")");
-       		defender1.append("<p>" + characters[i].HP + "</p>").addClass("yourDefenderHP");
+			var defender1HP_p = $("<p>").addClass("yourDefenderHP").html(characters[i].HP);
+	       	defender1.append(defender1HP_p);
+       		chosenYourDefender = true;
+
 		}
 	}
+}
 	//THIS WILL STOP THE ONCLICK EVENT
 	$(".player").off();
 	// HIDING THE CHOSEN CHARACTER FROM THE yourDefenderId....AND THEN GIVING A NEW MESSAGE..
-	$(this).addClass("hide");
-	$(".message").html("Start attacking by clicking the BUTTON");
+	$(this).hide();
+	$(".message").text("Start attacking by clicking the BUTTON");
 	enemiesAvailable = characters.slice(characters[i]);
-
-
 
 	//DYNAMICALLY CREATING THE ATTACK BUTTON......
 	var attack = $("<button>").addClass("btn-danger").html("Attack ").appendTo("#clickHere");
 
-	//ATTCK BUTTON ONCLICK EVENT HANDLER..
+//ATTCK BUTTON ONCLICK EVENT HANDLER..
 $("#clickHere").on("click", function() {
-	
-	startGame();
-});
+	//if(yourCharacter["HP"] > 0 && defender["HP"] > 0){
+	// if((chosenYourCharacter) && (chosenYourDefender)){
+	startAttack();
 
-		})
+	if (yourCharacter["HP"] <= 0){
+		$(".btn-danger").prop('disabled', true);
+		$(".message").text("You have been defeated, play again?");
+
+
+	} else if(defender["HP"] <= 0){
+		//defeatedDefender = true;
+		$(".btn-danger").prop('disabled', true);
+		$(".message").text("You won this round. Please select your next Defender");
+		$(defender1).hide();
+		chosenYourDefender = false;
+		pickDefender();
+		$(".player").on();
+	} else {
+			$(".message").text("Continue Attacking!!");
+		}
+
+	// }
+
+	});
+
+
+})
 			
 	});
 });
 
 
 
-function startGame() {
+function startAttack() {
 
-	var player1 = yourCharacter["HP"] -= defender["AP"];
-	console.log(player1);
+	
+	yourCharacter["HP"] -= defender["AP"];
+	$(".yourPlayerHP").text(yourCharacter["HP"]);
+	
 
-	var defender1 = defender["HP"] -= yourCharacter["AP"];
-	console.log(defender1);
+	defender["HP"] -= yourCharacter["AP"];
+	$(".yourDefenderHP").text(defender["HP"]);
 
-	yourCharacter["AP"] += yourCharacter["AP"];
-	console.log(yourCharacter["AP"]);
+	yourCharacter["AP"] += yourCharacter["CAP"];
+	
 
-	// if( player1 <= 0){
-	// 	document.querySelector("#message").innerHTML = "You have been defeated, play again?";
 
-	// } else {
-	// 	//defeatedDefender = true;
-	// 	document.querySelector("#message").innerHTML = = "You have defeated" + defender + ". Please select your next defender";
 
+
+
+	// //if(enemiesAvailable.length === 0) {
+	// 	$(".message").html("Congratulations!!! You WON the game!");
 	// }
 
 }
 
 
-	
+	//GAME DOESNT END EVEN WHEN THE HPs ARE LESSER THAN 0..
+	//ATTACK BUTTON APPEARS EVEN WHEN yourCharacter is clicked on twice..
+	//NEED TO MAKE THE RESTART BUTTON..
+
 
 
 
