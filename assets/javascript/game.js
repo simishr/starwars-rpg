@@ -1,30 +1,11 @@
 //DECLARING THE VARIABLES..
 	//THE ARRAY CONTAINING THE OBJECTS....
-var characters = [{
-	name: "Obi Wan Kenobi", 
-	HP: 120, 
-	AP: 8,
-	CAP: 8,
-	image:"./assets/images/obi.jpg"
-}, {
-	name: "Darth Vader", 
-	HP: 140, 
-	AP: 10, 
-	CAP: 10,
-	image:"./assets/images/vader.jpg"
-}, {
-	name: "Luke Skywalker", 
-	HP: 110, 
-	AP: 13, 
-	CAP: 13,
-	image:"./assets/images/luke.jpg"
-}, {
-	name: "Darth Maul", 
-	HP: 130, 
-	AP: 5, 
-	CAP: 5,
-	image:"./assets/images/maul.jpg"
-} ];
+var characters = [
+	{ name: "Obi Wan Kenobi", HP: 120, AP: 8, CAP: 8, image:"./assets/images/obi.jpg"}, 
+	{ name: "Darth Vader", HP: 140, AP: 10, CAP: 10, image:"./assets/images/vader.jpg"}, 
+	{ name: "Luke Skywalker", HP: 110, AP: 13, CAP: 13, image:"./assets/images/luke.jpg"}, 
+	{ name: "Darth Maul", HP: 130, AP: 5, CAP: 5, image:"./assets/images/maul.jpg"}
+ ];
 var sounds = { //ARRAY CONTAINING SOUND FILES
  win: {
      sound: new Howl({
